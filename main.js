@@ -43,30 +43,54 @@ const pies = [
   }
 ];
 
-const printToDom = (toPrint, divId) => {
-  document.getElementById(divId).innerHTML = toPrint;
-};
-
-const cardBuilder = pieArr => {
+const printToDom = (divId, stringToPrint) => {
+  document.getElementById(divId).innerHTML = stringToPrint;
+}
+const cardBuilder = (pieArr) => {
+  //build giant string of pies
   let domString = '<div class="row">';
-  for (let i = 0; i < pieArr.length; i++) {
-    const currentPie = pieArr[i];
-    //domString += `<h1>${currentPie.name}</h1>`;
-    domString += `
-    <div class="col-3">
+  for( let i = 0; i < pieArr.length; i++) {
+      const currentPie = pieArr[i];
+      domString += `
+      <div class="col-3">
       <div class="card">
-            <img src="${currentPie.imageUrl}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">${currentPie.name}</h5>
-            <p class="card-text">${currentPie.instructor}, ${currentPie.iceCream}</p>
-
-        </div>
+        <img src="${currentPie.imageUrl}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">${currentPie.name}</h5>
+        <p class="card-text">${currentPie.instructor} || ${currentPie.iceCream}</p>
       </div>
     </div>
- `;
+    </div>`;
+      //domString += `<h1>${currentPie.name}</h1>`;
   }
   domString += '</div>';
-  printToDom(domString, "pie-zone");
-};
-
+  //print them to the dom
+  printToDom("pie-zone", domString);
+}
 cardBuilder(pies);
+
+const buttonClick = (e) => {
+  //figure out who the instructor is for the button we clicked
+  const instructor = e.target.id
+  const selectedPies = []
+  //then figure out how to only get those pies from the list of all the pies
+  for (let i = 0; i < pies.length; i++) {
+      const pie = pies[i]
+      if (pie.instructor === instructor) {
+          selectedPies.push(pie)
+      }
+  }  
+  if (instructor === 'all') { cardBuilder(pies);
+  } else {
+  cardBuilder(selectedPies);
+  }
+  }
+
+document.getElementById('zoe').addEventListener('click', buttonClick) 
+
+document.getElementById('michael').addEventListener('click', buttonClick)
+
+
+document.getElementById('callan').addEventListener('click', buttonClick)
+
+document.getElementById('all').addEventListener('click', buttonClick)
